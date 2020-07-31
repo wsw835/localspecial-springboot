@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.wsw.mapper.TypeMapper">
+
+    <select id="selectAllType" resultType="type">
+        select *from `type` WHERE ZXBS='0'
+    </select>
+
+    <select id="selectById" resultType="type" parameterType="int">
+        select *from `type` where t_id=#{tId} and ZXBS='0'
+    </select>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.wsw.mapper.AddressMapper">
+
+    <resultMap id="selectAllAddr" type="address">
+        <id property="aId" column="a_id"/>
+        <result property="aAddr" column="a_addr"/>
+        <result property="aSenduser" column="a_senduser"/>
+        <result property="aDetail" column="a_detail"/>
+        <result property="aSendtel" column="a_sendtel"/>
+        <result property="uId" column="u_id"/>
+        <result property="aState" column="a_state"/>
+        <association property="user" column="u_id" select="selectUser"/>
+    </resultMap>
+
+    <select id="selectUser" resultType="user" parameterType="user">
+        select *from `user` where u_id=#{uId} and ZXBS='0'
+    </select>
+
+    <select id="selectAll" resultMap="selectAllAddr" parameterType="int">
+        select *from address where u_id=#{uid} and ZXBS='0'
+    </select>
+
+    <insert id="insert" parameterType="address">
+        INSERT INTO `address` (`a_id`, `a_addr`, `a_senduser`, `a_detail`, `a_sendtel`, `u_id`,`a_state`)
+        VALUES (null, #{aAddr}, #{aSenduser}, #{aDetail}, #{aSendtel}, #{uId},#{aState})
+    </insert>
+
+    <update id="delete" parameterType="java.lang.String">
+        UPDATE address SET ZXBS='1' where a_id=#{aid}
+    </update>
+
+    <update id="update">
+        update address set a_state=0 where a_state=1
+    </update>
+</mapper>

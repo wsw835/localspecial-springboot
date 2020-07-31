@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.wsw.mapper.UserMapper">
+    <select id="selectByUid" parameterType="int" resultType="user">
+        select *
+        from `user`
+        where u_id = #{uId} AND ZXBS='0'
+    </select>
+
+    <select id="selectByUname" parameterType="java.lang.String" resultType="user">
+        select *
+        from `user`
+        where u_name=#{user} AND ZXBS='0'
+    </select>
+
+    <select id="selectByTel" parameterType="user" resultType="user">
+        select *from user where u_telephone=#{uTelephone} AND ZXBS='0'
+    </select>
+
+    <insert id="register" parameterType="user">
+        INSERT INTO `user`(u_id,u_name,u_realname,u_telephone,u_password,u_isbusiness,u_shop)
+        VALUES (null,#{uName},#{uRealname},#{uTelephone},#{uPassword},default,null)
+    </insert>
+
+    <select id="login" parameterType="user" resultType="user">
+        select * from user where
+        u_telephone=#{uTelephone} and u_password=#{uPassword}
+        or (u_name=#{uTelephone} and u_password=#{uPassword} ) AND ZXBS='0'
+    </select>
+
+    <update id="update" parameterType="user">
+        update `user` set u_name=#{uName},
+        u_realname=#{uRealname},u_telephone=#{uTelephone},
+        u_password=#{uPassword} where u_id=#{uId}
+    </update>
+
+</mapper>

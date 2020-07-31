@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.wsw.mapper.GoodsMapper">
+
+    <select id="selectType" resultType="type" parameterType="goods">
+        select *from `type` where t_id=#{tId} and ZXBS='0'
+    </select>
+
+    <insert id="insert" parameterType="goods">
+        INSERT INTO
+        `goods` (`g_id`, `g_name`, `g_price`, `g_stock`, `g_image`, `g_about`, `t_id`, `g_date`)
+        VALUES
+        (null, #{gName}, #{gPrice}, #{gStock}, #{gImage}, #{gAbout}, #{type.tId}, #{gDate});
+    </insert>
+
+    <select id="selectTen" resultType="goods">
+        select *from `goods` WHERE ZXBS='0' order by g_date desc limit 2,10
+    </select>
+
+    <select id="selectAll" resultType="goods">
+        select * from `goods` WHERE ZXBS='0'
+    </select>
+
+    <select id="selectNew" resultType="goods">
+        select *from goods WHERE ZXBS='0' order by g_date desc limit 0,2
+    </select>
+
+    <select id="selectByGid" resultType="goods" parameterType="int">
+        select *from goods where g_id=#{gId} and ZXBS='0'
+    </select>
+
+    <select id="selectByTid" parameterType="int" resultType="goods">
+        select * from goods where t_id=#{tId} and ZXBS='0'
+    </select>
+
+    <update id="updateStock" parameterType="int">
+        update goods set g_stock= g_stock-1 where g_id=#{gId}
+    </update>
+
+    <select id="listGoodsOfLocate" resultType="goods">
+       select * from goods where p_id=#{id} AND ZXBS='0'
+    </select>
+
+    <select id="getIdOfProvince" resultType="java.lang.String">
+        select p_id from `position` WHERE p_position=#{pos}
+    </select>
+
+    <!-- <cache
+             type="org.andy.shop.cache.MybatisRedisCache"
+             eviction="LRU"
+             flushInterval="6000000"
+             size="1024"
+             readOnly="false"
+     />-->
+</mapper>

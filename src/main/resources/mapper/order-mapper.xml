@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.wsw.mapper.OrderMapper">
+
+    <resultMap id="selectOrderDetail" type="order">
+        <id column="or_id" property="orId"/>
+        <result column="or_date" property="orDate"/>
+        <result column="g_id" property="gId"/>
+        <result column="u_id" property="uId"/>
+        <result column="or_total" property="orTotal"/>
+        <result column="or_count" property="orCount"/>
+        <result column="or_state" property="orState"/>
+        <result column="a_id" property="aId"/>
+        <association property="good" column="g_id" select="selectGoods"/>
+        <association property="user" column="u_id" select="selectUser"/>
+        <association property="address" column="a_id" select="selectAddress"/>
+        <collection property="orderdetailList" column="or_id" ofType="orderDetail" select="selectByOid"/>
+    </resultMap>
+
+    <select id="selectGoods" resultType="goods">
+        select *from goods where g_id=#{gId} and ZXBS='0'
+    </select>
+
+    <select id="selectUser" resultType="user">
+        select *from `user` where u_id=#{uId} and ZXBS='0'
+    </select>
+
+    <select id="selectAddress" resultType="address">
+        select *from address where a_id=#{aId} and ZXBS='0'
+    </select>
+
+    <select id="selectByOid" resultType="orderDetail">
+        select *from orderdetail where or_id=#{orId} and ZXBS='0'
+    </select>
+
+    <select id="selectAllOrder" parameterType="int" resultMap="selectOrderDetail">
+        select *from `order` where u_id=#{uid} and ZXBS='0'
+    </select>
+
+    <insert id="insert" parameterType="order">
+        INSERT INTO
+        `order` (`or_id`, `g_id`, `u_id`,or_date,or_count,a_id,or_total,or_state)
+        VALUES
+        (null, #{gId}, #{uId},now(),#{orCount},#{aId},#{orTotal},default)
+    </insert>
+
+    <select id="selectLast" resultType="order">
+        select *from `order` where ZXBS='0' order by or_date desc limit 0,1
+    </select>
+
+    <delete id="delete" parameterType="int">
+       update `order` set ZXBS='1' WHERE or_id=#{orId}
+    </delete>
+
+    <select id="selectByOrid" parameterType="int" resultType="order">
+        select *from `order` where or_id=#{orId} AND ZXBS='0'
+    </select>
+
+    <update id="update">
+        update `order` set or_state=1 where or_state=0
+    </update>
+</mapper>

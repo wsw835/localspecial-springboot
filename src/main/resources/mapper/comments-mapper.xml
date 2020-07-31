@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.wsw.mapper.CommentsMapper">
+
+    <resultMap id="selectAllComments" type="Comments">
+        <id property="cId" column="c_id"/>
+        <result property="cComment" column="c_comment"/>
+        <result property="uId" column="u_id"/>
+        <result property="gId" column="g_id"/>
+        <result property="cDate" column="c_date"/>
+        <association property="user" column="u_id" select="selectUser">
+            <result property="uId" column="u_id"/>
+            <result property="uName" column="u_name"/>
+        </association>
+        <association property="goods" column="g_id" select="selectGoods"/>
+    </resultMap>
+
+    <select id="selectUser" resultType="user" parameterType="user">
+        select *from `user` where u_id=#{uId} and ZXBS='0'
+    </select>
+
+    <select id="selectGoods" resultType="goods" parameterType="goods">
+        select *from `goods` where g_id=#{gId} and ZXBS='0'
+    </select>
+
+    <select id="selectAllByGid" resultMap="selectAllComments" parameterType="int">
+        select * from comments where g_id=#{gId} and ZXBS='0'
+    </select>
+
+    <insert id="insert" parameterType="comments">
+        INSERT INTO `localspecial`.`comments` (`c_id`, `c_comment`, `u_id`, `g_id`,`c_date`)
+        VALUES (NULL, #{cComment}, #{uId}, #{gId},now())
+    </insert>
+</mapper>

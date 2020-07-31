@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.wsw.mapper.OrderdetailMapper">
+
+    <insert id="insert" parameterType="orderDetail">
+        INSERT INTO
+        `localspecial`.`orderdetail`
+        (`od_id`, `od_date`, `od_state`, `od_total`,`od_count`,`or_id`)
+        VALUES
+        (null,now(),default,#{odTotal},#{odCount},#{orId})
+    </insert>
+
+    <select id="selectAll" resultType="orderDetail" parameterType="int">
+        select * from orderdetail where or_id=#{orId} AND ZXBS='0'
+    </select>
+
+    <delete id="delete" parameterType="int">
+        update orderdetail set ZXBS='0' where od_id=#{odId}
+    </delete>
+
+
+</mapper>

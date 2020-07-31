@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  #数据库配置
+  datasource:
+    username: root
+    url: jdbc:mysql://localhost:3306/localspecial?characterEncoding=utf8
+    password: 199815
+    driver-class-name: com.mysql.jdbc.Driver
+
+  #配置显示jsp视图
+  mvc:
+    view:
+      prefix: /**
+      suffix: .jsp
+
+#mybatis配置
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:mapper/*.xml
+
+#日志打印
+logging:
+  level:
+    com:
+      wsw:
+        mapper: debug

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.wsw.mapper.ShoppingcartMapper">
+
+
+    <resultMap id="shoppingCartSelect" type="shoppingCart">
+        <id property="sId" column="s_id"/>
+        <result property="sCount" column="s_count"/>
+        <result property="sTotal" column="s_total"/>
+        <result property="gId" column="g_id"/>
+        <result property="uId" column="u_id"/>
+        <result property="aId" column="a_id"/>
+        <association property="goods" column="g_id" select="selectGoods"/>
+        <association property="user" column="u_id" select="selectUser"/>
+    </resultMap>
+
+    <select id="selectGoods" parameterType="shoppingCart" resultType="goods">
+        select *from goods where g_id=#{gId} AND ZXBS='0'
+    </select>
+
+    <select id="selectUser" parameterType="shoppingCart" resultType="user">
+        select *from user where u_id=#{uId} AND ZXBS='0'
+    </select>
+
+    <insert id="insert" parameterType="shoppingCart">
+        INSERT INTO `localspecial`.`shoppingcart`
+        (`s_id`, `s_count`, `s_total`, `g_id`, `u_id`) VALUES (null, #{sCount}, #{sTotal}, #{gId}, #{uId});
+    </insert>
+
+
+    <select id="selectAll" resultMap="shoppingCartSelect" parameterType="int">
+        select * from `shoppingcart` where u_id=#{uId} AND ZXBS='0'
+    </select>
+
+
+    <delete id="delete" parameterType="int">
+       UPDATE shoppingcart SET ZXBS='1' where s_id=#{sId}
+    </delete>
+
+    <select id="selectCountByUid" parameterType="int" resultType="int">
+        select count(0) from shoppingcart where u_id=#{uId} AND ZXBS='0'
+    </select>
+
+    <select id="selectBySid" parameterType="int" resultType="shoppingCart">
+        select *from shoppingcart where s_id=#{sId} AND ZXBS='0'
+    </select>
+
+</mapper>
